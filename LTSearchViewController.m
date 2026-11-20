@@ -589,7 +589,7 @@
     } else if ([item isKindOfClass:[LTLocalPlaylist class]]) {
         LTLocalPlaylist *playlist = item;
         cell.textLabel.text = playlist.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d tracks", (int)playlist.tracks.count];
+        cell.detailTextLabel.text = LTTrackCount(playlist.tracks.count);
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.imageView.image = nil;
         if (playlist.coverPath.length) {
