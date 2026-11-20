@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTHomeViewController.h"
 #import "LTPlaylistStore.h"
 #import "LTPlayerController.h"
@@ -151,9 +152,9 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Home";
+    self.title = LTLoc(@"Home", @"Главная");
     self.view.backgroundColor = [LTTheme background];
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Stats"
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:LTLoc(@"Stats", @"Статистика")
                                                                              style:UIBarButtonItemStyleBordered
                                                                             target:self
                                                                             action:@selector(statsTapped:)];
@@ -190,7 +191,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
     [banner.layer insertSublayer:gradient atIndex:0];
 
     UILabel *titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(16, 20, width - 32, 30)];
-    titleLabel.text = @"Welcome back.";
+    titleLabel.text = LTLoc(@"Welcome back.", @"С возвращением!");
     titleLabel.font = [UIFont boldSystemFontOfSize:24];
     titleLabel.textColor = [UIColor whiteColor];
     titleLabel.backgroundColor = [UIColor clearColor];
@@ -246,7 +247,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
     [self updateBannerText];
     [self.tableView reloadData];
     if (!self.recentTracks.count && !self.playlists.count) {
-        self.emptyLabel.text = @"Nothing here yet.\nPlay a song and create playlists to see them.";
+        self.emptyLabel.text = LTLoc(@"Nothing here yet.\nPlay a song and create playlists to see them.", @"Здесь пока пусто.\nВключите музыку или создайте плейлист.");
         self.emptyLabel.hidden = NO;
     } else {
         self.emptyLabel.hidden = YES;
@@ -301,7 +302,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
         cell.onTrackTapped = ^(LTTrack *track) {
             LTHomeViewController *strongSelf = weakSelf;
             if (!strongSelf) return;
-            [LTPlayerController sharedController].queueSourceName = @"Home";
+            [LTPlayerController sharedController].queueSourceName = LTLoc(@"Home", @"Главная");
             [[LTPlayerController sharedController] playQueue:@[track] atIndex:0];
             [(LTTabBarController *)strongSelf.tabBarController showNowPlaying];
         };
