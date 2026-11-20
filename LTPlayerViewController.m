@@ -1805,7 +1805,7 @@ static BOOL sHasShownSwipeHint = NO;
     if (!track || !track.videoId.length) {
         self.lyricsVideoId = nil;
         self.lyricLines = nil;
-        [self showLyricsMessage:@"Nothing playing.\n\nSwipe up for lyrics\nonce a song starts."];
+        [self showLyricsMessage:LTLoc(@"Nothing playing.\n\nSwipe up for lyrics\nonce a song starts.", @"Ничего не играет.\n\nСмахните вверх для текста песни.")];
         return;
     }
     if ([self.lyricsVideoId isEqualToString:track.videoId]) {
@@ -1813,7 +1813,7 @@ static BOOL sHasShownSwipeHint = NO;
     }
     self.lyricsVideoId = track.videoId;
     self.lyricLines = nil;
-    [self showLyricsMessage:@"Loading lyrics\u2026"];
+    [self showLyricsMessage:LTLoc(@"Loading lyrics\u2026", @"Загрузка текста…")];
     __weak LTPlayerViewController *weakSelf = self;
     [[LTYouTubeClient sharedClient] fetchTimedLyricsForVideoId:track.videoId completion:^(NSDictionary *result, NSError *error) {
         LTPlayerViewController *strongSelf = weakSelf;
@@ -1823,7 +1823,7 @@ static BOOL sHasShownSwipeHint = NO;
         }
         if (error || !result) {
             strongSelf.lyricsVideoId = nil;
-            [strongSelf showLyricsMessage:@"No lyrics available\nfor this song."];
+            [strongSelf showLyricsMessage:LTLoc(@"No lyrics available\nfor this song.", @"Текст этой песни\nнедоступен.")];
             return;
         }
         BOOL timed = [[result objectForKey:@"hasTimestamps"] boolValue];
@@ -1840,7 +1840,7 @@ static BOOL sHasShownSwipeHint = NO;
                 [strongSelf showPlainLyrics:plain];
             } else {
                 strongSelf.lyricsVideoId = nil;
-                [strongSelf showLyricsMessage:@"No lyrics available\nfor this song."];
+                [strongSelf showLyricsMessage:LTLoc(@"No lyrics available\nfor this song.", @"Текст этой песни\nнедоступен.")];
             }
         }
     }];
@@ -1877,7 +1877,7 @@ static BOOL sHasShownSwipeHint = NO;
         if (sub.tag == 77) [sub removeFromSuperview];
     }
     if (!plain.length) {
-        [self showLyricsMessage:@"No lyrics available\nfor this song."];
+        [self showLyricsMessage:LTLoc(@"No lyrics available\nfor this song.", @"Текст этой песни\nнедоступен.")];
         return;
     }
     NSArray *rawLines = [plain componentsSeparatedByString:@"\n"];
@@ -1919,7 +1919,7 @@ static BOOL sHasShownSwipeHint = NO;
         if (sub.tag == 77) [sub removeFromSuperview];
     }
     if (!self.lyricLines.count) {
-        [self showLyricsMessage:@"No lyrics available\nfor this song."];
+        [self showLyricsMessage:LTLoc(@"No lyrics available\nfor this song.", @"Текст этой песни\nнедоступен.")];
         return;
     }
     NSMutableArray *labels = [NSMutableArray array];
