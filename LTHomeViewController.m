@@ -115,7 +115,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
         UILabel *artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(2, artH + 30, tileWidth - 4, 12)];
         artistLabel.font = [UIFont systemFontOfSize:11];
         artistLabel.textColor = [LTTheme secondaryText];
-        artistLabel.text = track.artist.length ? track.artist : @"Unknown Artist";
+        artistLabel.text = track.artist.length ? track.artist : LTLoc(@"Unknown Artist", @"Неизвестный исполнитель");
         [tile addSubview:artistLabel];
 
         [_scrollView addSubview:tile];
@@ -281,8 +281,8 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if ([self hasRecents] && section == 0) return @"Recently Played";
-    if (section == [self playlistSection] && self.playlists.count) return @"Your Playlists";
+    if ([self hasRecents] && section == 0) return LTLoc(@"Recently Played", @"Недавно прослушанные");
+    if (section == [self playlistSection] && self.playlists.count) return LTLoc(@"Your Playlists", @"Ваши плейлисты");
     return @"";
 }
 
