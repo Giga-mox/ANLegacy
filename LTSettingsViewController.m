@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTSettingsViewController.h"
 #import "LTPlaylistStore.h"
 #import "LTPlayerController.h"
@@ -23,6 +24,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     LTSettingsSectionData,
     LTSettingsSectionAbout,
     LTSettingsSectionCredits,
+    LTSettingsSectionLanguage,
 };
 
 @interface LTSettingsViewController () <UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate, UIActionSheetDelegate>
@@ -44,7 +46,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Settings";
+    self.title = LTLoc(@"Settings", @"Настройки");
     self.view.backgroundColor = [LTTheme groupedBackground];
 
     CGRect bounds = self.view.bounds;
@@ -159,11 +161,11 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 #pragma mark - Storage
 
 - (void)clearDownloadsTapped {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Clear Offline Downloads"
-                                                    message:@"This removes all downloaded tracks from the device. Streaming is not affected."
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Clear Offline Downloads", @"Удалить скачанные песни")
+                                                    message:LTLoc(@"This removes all downloaded tracks from the device. Streaming is not affected.", @"Все скачанные песни будут удалены с устройства. Онлайн-воспроизведение не изменится.")
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Clear", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Clear", @"Очистить"), nil];
     alert.tag = 900;
     [alert show];
 }
@@ -184,21 +186,21 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 }
 
 - (void)clearSearchHistoryTapped {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Clear Search History"
-                                                    message:@"Remove all saved search terms?"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Clear Search History", @"Очистить историю поиска")
+                                                    message:LTLoc(@"Remove all saved search terms?", @"Удалить всю историю поиска?")
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Clear", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Clear", @"Очистить"), nil];
     alert.tag = 903;
     [alert show];
 }
 
 - (void)resetStatsTapped {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Reset Listening Stats"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Reset Listening Stats", @"Сбросить статистику")
                                                     message:@"This clears the Stats screen, the most-played list, the listening counter, any stats synced from other devices, and listening history. This cannot be undone."
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Reset", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Reset", @"Сбросить"), nil];
     alert.tag = 902;
     [alert show];
 }
@@ -215,19 +217,19 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     if (self.refreshingMetadata) return;
     NSInteger count = [[LTPlaylistStore sharedStore] offlineTrackCount];
     if (!count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"No Offline Songs"
-                                                        message:@"Download some tracks to a playlist first."
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"No Offline Songs", @"Нет скачанных песен")
+                                                        message:LTLoc(@"Download some tracks to a playlist first.", @"Сначала скачайте песни в плейлист.")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
         return;
     }
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Refresh Metadata"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Refresh Metadata", @"Обновить метаданные")
                                                     message:[NSString stringWithFormat:@"Re-fetch titles, artists, durations and full-res album art for %d offline track(s)?", (int)count]
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Refresh", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Refresh", @"Обновить"), nil];
     alert.tag = 901;
     [alert show];
 }
@@ -251,14 +253,14 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         NSString *message = failed
             ? [NSString stringWithFormat:@"Updated %d track(s). %d failed — try again later.", (int)updated, (int)failed]
             : [NSString stringWithFormat:@"Updated %d track(s), including full-res album art.", (int)updated];
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Refresh Complete"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Refresh Complete", @"Обновление завершено")
                                                         message:message
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
         [alert show];
     }];
-    UIAlertView *progress = [[UIAlertView alloc] initWithTitle:@"Refreshing"
+    UIAlertView *progress = [[UIAlertView alloc] initWithTitle:LTLoc(@"Refreshing", @"Обновление")
                                                        message:[NSString stringWithFormat:@"Updating 0 of %d…", (int)total]
                                                       delegate:nil
                                              cancelButtonTitle:nil
@@ -273,7 +275,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     LTPlaylistStore *store = [LTPlaylistStore sharedStore];
     NSInteger count = [store offlineFileCount];
     if (!count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Export"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Nothing to Export", @"Нечего экспортировать")
                                                         message:@"Download some tracks to a playlist first, then you can create an AN Mini instance."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
@@ -292,7 +294,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         if (hasDownloaded) [eligible addObject:p];
     }
     if (!eligible.count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Nothing to Export"
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Nothing to Export", @"Нечего экспортировать")
                                                         message:@"Download some tracks to a playlist first, then you can create an AN Mini instance."
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
@@ -351,16 +353,27 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 #pragma mark - UIAlertViewDelegate
 
 - (void)presentIconPicker {
-    UIAlertView *sheet = [[UIAlertView alloc] initWithTitle:@"App Icon"
+    UIAlertView *sheet = [[UIAlertView alloc] initWithTitle:LTLoc(@"App Icon", @"Иконка приложения")
                                                    message:@"Pick which icon revision shows on the Home Screen. iOS will confirm the change."
                                                   delegate:self
-                                         cancelButtonTitle:@"Cancel"
-                                         otherButtonTitles:@"Classic", @"Rounded", @"Modern", nil];
+                                         cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                         otherButtonTitles:LTLoc(@"Classic", @"Классическая"), LTLoc(@"Rounded", @"Скруглённая"), LTLoc(@"Modern", @"Современная"), nil];
     sheet.tag = 950;
     [sheet show];
 }
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == 951) {
+        if (buttonIndex == 1 || buttonIndex == 2) {
+            [[NSUserDefaults standardUserDefaults] setObject:(buttonIndex == 2 ? @"ru" : @"en") forKey:@"LTAppLanguage"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            self.title = LTLoc(@"Settings", @"Настройки");
+            [self.tableView reloadData];
+            UIAlertView *notice = [[UIAlertView alloc] initWithTitle:LTLoc(@"Language changed", @"Язык изменён") message:LTLoc(@"Restart the app to apply the language.", @"Перезапустите приложение, чтобы применить язык.") delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+            [notice show];
+        }
+        return;
+    }
     if (alertView.tag == 950) {
         NSString *name = nil;
         if (buttonIndex == 1) name = [LTAppIcon classicIconName];
@@ -412,7 +425,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 #pragma mark - UITableViewDataSource
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 5;
+    return 6;
 }
 
 // The icon picker is appended after whatever the last appearance row happens to
@@ -425,11 +438,12 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     switch (section) {
-        case LTSettingsSectionPlayback: return @"Playback options";
-        case LTSettingsSectionAppearance: return @"Appearance options";
-        case LTSettingsSectionData: return @"Data management";
-        case LTSettingsSectionAbout: return @"About";
-        case LTSettingsSectionCredits: return @"Credits";
+        case LTSettingsSectionPlayback: return LTLoc(@"Playback options", @"Воспроизведение");
+        case LTSettingsSectionAppearance: return LTLoc(@"Appearance options", @"Оформление");
+        case LTSettingsSectionData: return LTLoc(@"Data management", @"Управление данными");
+        case LTSettingsSectionAbout: return LTLoc(@"About", @"О приложении");
+        case LTSettingsSectionCredits: return LTLoc(@"Credits", @"Авторы");
+        case LTSettingsSectionLanguage: return LTLoc(@"Language", @"Язык");
         default: return @"";
     }
 }
@@ -441,6 +455,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         case LTSettingsSectionData: return 8;
         case LTSettingsSectionAbout: return 2;
         case LTSettingsSectionCredits: return 2;
+        case LTSettingsSectionLanguage: return 1;
         default: return 0;
     }
 }
@@ -456,47 +471,54 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.textLabel.textColor = [LTTheme text];
 
+    cell.detailTextLabel.text = nil;
     switch (indexPath.section) {
+        case LTSettingsSectionLanguage:
+            cell.textLabel.text = LTLoc(@"Language", @"Язык");
+            cell.detailTextLabel.text = LTIsRussian() ? @"Русский" : @"English";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            break;
         case LTSettingsSectionPlayback: {
             if (indexPath.row == 0) {
-                cell.textLabel.text = @"Keep Screen Awake";
+                cell.textLabel.text = LTLoc(@"Keep Screen Awake", @"Не выключать экран");
                 cell.accessoryView = [self awakeSwitch];
             } else {
-                cell.textLabel.text = @"Show kbps Counter";
+                cell.textLabel.text = LTLoc(@"Show kbps Counter", @"Показывать битрейт");
                 cell.accessoryView = [self kbpsSwitch];
             }
             break;
         }
         case LTSettingsSectionAppearance: {
             if ([LTAppIcon isPickerSupported] && indexPath.row == [self appearanceRowCount] - 1) {
-                cell.textLabel.text = @"App Icon";
+                cell.textLabel.text = LTLoc(@"App Icon", @"Иконка приложения");
                 cell.detailTextLabel.text = [LTAppIcon currentIconLabel];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 0) {
-                cell.textLabel.text = @"Album Art Background";
+                cell.textLabel.text = LTLoc(@"Album Art Background", @"Обложка на фоне");
                 cell.detailTextLabel.text = @"";
                 cell.accessoryView = [self bgSwitch];
             } else if (indexPath.row == 1) {
-                cell.textLabel.text = @"Enable Animations";
+                cell.textLabel.text = LTLoc(@"Enable Animations", @"Анимации");
                 cell.detailTextLabel.text = @"";
                 cell.accessoryView = [self animSwitch];
             } else if (indexPath.row == 2) {
-                cell.textLabel.text = @"Transition Speed";
+                cell.textLabel.text = LTLoc(@"Transition Speed", @"Скорость переходов");
                 cell.detailTextLabel.text = [self speedLabel];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 3) {
-                cell.textLabel.text = @"iPod Mode";
+                cell.textLabel.text = LTLoc(@"iPod Mode", @"Режим iPod");
                 cell.detailTextLabel.text = @"";
                 cell.accessoryView = [self ipodSwitch];
             } else if (indexPath.row == 4) {
-                cell.textLabel.text = @"Recents Tile Size";
+                cell.textLabel.text = LTLoc(@"Recents Tile Size", @"Размер недавних");
                 cell.detailTextLabel.text = [self tileSizeLabel];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else {
-                cell.textLabel.text = @"One-Handed Mode";
+                cell.textLabel.text = LTLoc(@"One-Handed Mode", @"Управление одной рукой");
                 cell.detailTextLabel.text = [LTOneHandedMode currentLabel];
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
@@ -506,34 +528,34 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         case LTSettingsSectionData: {
             LTPlaylistStore *store = [LTPlaylistStore sharedStore];
             if (indexPath.row == 0) {
-                cell.textLabel.text = @"Download Queue";
+                cell.textLabel.text = LTLoc(@"Download Queue", @"Очередь загрузок");
                 NSInteger pending = [store pendingDownloadCount];
-                cell.detailTextLabel.text = pending ? [NSString stringWithFormat:@"%d waiting", (int)pending] : @"Empty";
+                cell.detailTextLabel.text = pending ? [NSString stringWithFormat:@"%d waiting", (int)pending] : LTLoc(@"Empty", @"Пусто");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 1) {
-                cell.textLabel.text = @"Offline Downloads";
+                cell.textLabel.text = LTLoc(@"Offline Downloads", @"Скачанные песни");
                 cell.detailTextLabel.text = [NSString stringWithFormat:@"%d files", (int)[store offlineFileCount]];
             } else if (indexPath.row == 2) {
-                cell.textLabel.text = @"Sync with Another Device";
+                cell.textLabel.text = LTLoc(@"Sync with Another Device", @"Синхронизация устройств");
                 cell.detailTextLabel.text = @"";
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 3) {
-                cell.textLabel.text = @"Refresh Metadata & Artwork";
+                cell.textLabel.text = LTLoc(@"Refresh Metadata & Artwork", @"Обновить метаданные и обложки");
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 4) {
-                cell.textLabel.text = @"Create AN Mini Instance (BETA)";
+                cell.textLabel.text = LTLoc(@"Create AN Mini Instance (BETA)", @"Создать AN Mini (бета)");
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 5) {
-                cell.textLabel.text = @"Clear Offline Downloads";
+                cell.textLabel.text = LTLoc(@"Clear Offline Downloads", @"Удалить скачанные песни");
                 cell.textLabel.textColor = [UIColor redColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 6) {
-                cell.textLabel.text = @"Reset Listening Stats";
+                cell.textLabel.text = LTLoc(@"Reset Listening Stats", @"Сбросить статистику");
                 cell.textLabel.textColor = [UIColor redColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else {
-                cell.textLabel.text = @"Clear Search History";
+                cell.textLabel.text = LTLoc(@"Clear Search History", @"Очистить историю поиска");
                 cell.textLabel.textColor = [UIColor redColor];
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             }
@@ -541,10 +563,10 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         }
         case LTSettingsSectionAbout: {
             if (indexPath.row == 0) {
-                cell.textLabel.text = @"App";
-                cell.detailTextLabel.text = @"audioNINJA mobile";
+                cell.textLabel.text = LTLoc(@"App", @"Приложение");
+                cell.detailTextLabel.text = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"];
             } else {
-                cell.textLabel.text = @"Version";
+                cell.textLabel.text = LTLoc(@"Version", @"Версия");
                 NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
                 cell.detailTextLabel.text = version.length ? version : @"0.1.0";
             }
@@ -572,6 +594,12 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    if (indexPath.section == LTSettingsSectionLanguage) {
+        UIAlertView *picker = [[UIAlertView alloc] initWithTitle:LTLoc(@"Language", @"Язык") message:nil delegate:self cancelButtonTitle:LTLoc(@"Cancel", @"Отмена") otherButtonTitles:@"English", @"Русский", nil];
+        picker.tag = 951;
+        [picker show];
+        return;
+    }
     if (indexPath.section == LTSettingsSectionAbout && indexPath.row == 1) {
         [self handleVersionTap];
         return;
