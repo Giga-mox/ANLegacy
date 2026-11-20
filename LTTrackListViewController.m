@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import <QuartzCore/QuartzCore.h>
 #import "LTTrackListViewController.h"
 #import "LTYouTubeClient.h"
@@ -191,7 +192,7 @@
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Remove Downloads"
                                                         message:[NSString stringWithFormat:@"Remove all %d downloaded track%@? They will no longer be available offline.", (int)count, count == 1 ? @"" : @"s"]
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                               otherButtonTitles:@"Remove", nil];
         alert.tag = 951;
         [alert show];
@@ -299,7 +300,7 @@
 - (NSString *)trackCountText {
     NSInteger count = (NSInteger)self.tracks.count;
     if (count <= 0) return @"";
-    return [NSString stringWithFormat:@"%d track%@", (int)count, count == 1 ? @"" : @"s"];
+    return LTTrackCount(count);
 }
 
 - (void)updateDownloadState {
