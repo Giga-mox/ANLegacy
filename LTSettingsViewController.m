@@ -530,12 +530,12 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
             if (indexPath.row == 0) {
                 cell.textLabel.text = LTLoc(@"Download Queue", @"Очередь загрузок");
                 NSInteger pending = [store pendingDownloadCount];
-                cell.detailTextLabel.text = pending ? [NSString stringWithFormat:@"%d waiting", (int)pending] : LTLoc(@"Empty", @"Пусто");
+                cell.detailTextLabel.text = pending ? [NSString stringWithFormat:LTLoc(@"%d waiting", @"Ожидает: %d"), (int)pending] : LTLoc(@"Empty", @"Пусто");
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             } else if (indexPath.row == 1) {
                 cell.textLabel.text = LTLoc(@"Offline Downloads", @"Скачанные песни");
-                cell.detailTextLabel.text = [NSString stringWithFormat:@"%d files", (int)[store offlineFileCount]];
+                cell.detailTextLabel.text = LTFileCount([store offlineFileCount]);
             } else if (indexPath.row == 2) {
                 cell.textLabel.text = LTLoc(@"Sync with Another Device", @"Синхронизация устройств");
                 cell.detailTextLabel.text = @"";
