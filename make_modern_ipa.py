@@ -24,6 +24,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import os
 import plistlib
 import shutil
 import subprocess
@@ -36,7 +37,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 import deb_to_ipa  # noqa: E402
 
-TOOLCHAIN = Path("/home/superyosh23/theos/toolchain/linux/iphone/bin")
+TOOLCHAIN = Path(os.environ.get("THEOS", str(Path.home() / "theos"))) / "toolchain/linux/iphone/bin"
 LIPO = TOOLCHAIN / "lipo"
 VTOOL = TOOLCHAIN / "vtool"
 STORYBOARD = HERE / "ipa_extras" / "LaunchScreen.storyboardc"
@@ -104,7 +105,10 @@ def build_modern_ipa(deb: Path, out: Path) -> Path:
         exe = app / EXECUTABLE
         thinned = app / (EXECUTABLE + ".thin")
         bumped = app / (EXECUTABLE + ".bumped")
-        run([LIPO, exe, "-thin", "arm64", "-output", thinned])
+        if exe.read_bytes()[:4] in (b"\xca\xfe\xba\xbe", b"\xca\xfe\xba\xbf", b"\xbe\xba\xfe\xca", b"\xbf\xba\xfe\xca"):
+            run([LIPO, exe, "-thin", "arm64", "-output", thinned])
+        else:
+            shutil.copy2(exe, thinned)
         run([VTOOL, "-set-build-version", BUILD_PLATFORM, MIN_OS, SDK_VERSION,
              "-replace", "-output", bumped, thinned])
         thinned.unlink(missing_ok=True)
