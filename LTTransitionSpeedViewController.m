@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTTransitionSpeedViewController.h"
 #import "LTTransitionSettings.h"
 
@@ -15,7 +16,7 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Transition Speed";
+    self.title = LTLoc(@"Transition Speed", @"Скорость переходов");
     self.view.backgroundColor = [UIColor colorWithWhite:0.15f alpha:1.0f];
 
     CGFloat width = self.view.bounds.size.width;
@@ -23,7 +24,7 @@
 
     // Description
     UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(pad, 20, width - pad * 2, 40)];
-    desc.text = @"How fast in-app transitions play. Lower = faster.";
+    desc.text = LTLoc(@"How fast in-app transitions play. Lower = faster.", @"Скорость анимации переходов. Меньше — быстрее.");
     desc.font = [UIFont systemFontOfSize:14];
     desc.textColor = [UIColor lightGrayColor];
     desc.backgroundColor = [UIColor clearColor];
@@ -49,7 +50,7 @@
     [self.view addSubview:self.slider];
 
     self.fastLabel = [[UILabel alloc] initWithFrame:CGRectMake(pad, 158, width / 2.0f - pad, 20)];
-    self.fastLabel.text = @"Slower";
+    self.fastLabel.text = LTLoc(@"Slower", @"Медленнее");
     self.fastLabel.font = [UIFont systemFontOfSize:14];
     self.fastLabel.textColor = [UIColor whiteColor];
     self.fastLabel.backgroundColor = [UIColor clearColor];
@@ -57,7 +58,7 @@
     [self.view addSubview:self.fastLabel];
 
     self.slowLabel = [[UILabel alloc] initWithFrame:CGRectMake(width / 2.0f, 158, width / 2.0f - pad, 20)];
-    self.slowLabel.text = @"Faster";
+    self.slowLabel.text = LTLoc(@"Faster", @"Быстрее");
     self.slowLabel.font = [UIFont systemFontOfSize:14];
     self.slowLabel.textColor = [UIColor whiteColor];
     self.slowLabel.backgroundColor = [UIColor clearColor];
