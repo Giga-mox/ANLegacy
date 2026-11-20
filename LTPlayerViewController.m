@@ -1255,8 +1255,7 @@ static BOOL sHasShownSwipeHint = NO;
     LTPlayerController *controller = [LTPlayerController sharedController];
     NSInteger count = (NSInteger)controller.queue.count;
     if (count) {
-        self.queueHeader.text = [NSString stringWithFormat:@"Up Next  (%d track%@)",
-                                 (int)count, count == 1 ? @"" : @"s"];
+        self.queueHeader.text = [NSString stringWithFormat:LTLoc(@"Up Next  (%@)", @"Далее (%@)"), LTTrackCount(count)];
     } else {
         self.queueHeader.text = LTLoc(@"Queue is empty", @"Очередь пуста");
     }
