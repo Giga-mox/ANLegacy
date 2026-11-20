@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTOneHandedMode.h"
 
 static NSString *const kLTOneHandedModeKey = @"LTOneHandedMode";
@@ -38,9 +39,9 @@ static const CGFloat kLTOneHandedMinScreenHeight = 667.0f;
 
 + (NSString *)labelForMode:(LTOneHandedCorner)mode {
     switch (mode) {
-        case LTOneHandedCornerBottomLeft: return @"Bottom Left";
-        case LTOneHandedCornerBottomRight: return @"Bottom Right";
-        default: return @"Off";
+        case LTOneHandedCornerBottomLeft: return LTLoc(@"Bottom Left", @"Снизу слева");
+        case LTOneHandedCornerBottomRight: return LTLoc(@"Bottom Right", @"Снизу справа");
+        default: return LTLoc(@"Off", @"Выкл.");
     }
 }
 
