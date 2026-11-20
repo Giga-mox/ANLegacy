@@ -161,8 +161,8 @@
 }
 
 - (NSString *)searchPlaceholderForType:(NSString *)type {
-    if ([type isEqualToString:@"videos"]) return @"Search YouTube";
-    return @"Search YouTube Music";
+    if ([type isEqualToString:@"videos"]) return LTLoc(@"Search YouTube", @"Поиск в YouTube");
+    return LTLoc(@"Search YouTube Music", @"Поиск в YouTube Music");
 }
 
 - (BOOL)hasLocalSection {
@@ -363,7 +363,7 @@
 
 - (void)showSongOptionsForTrack:(LTTrack *)track {
     self.pendingTrack = track;
-    NSString *lastOption = [[LTPlaylistStore sharedStore] isTrackDownloaded:track] ? @"Remove Download" : @"Download";
+    NSString *lastOption = [[LTPlaylistStore sharedStore] isTrackDownloaded:track] ? LTLoc(@"Remove Download", @"Удалить загрузку") : LTLoc(@"Download", @"Скачать");
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:track.title
                                                        delegate:self
                                               cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
@@ -393,7 +393,7 @@
 - (void)promptForPlaylistNameWithTrack:(LTTrack *)track {
     self.pendingTrack = track;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"New Playlist", @"Новый плейлист")
-                                                    message:@"Enter a name for the playlist."
+                                                    message:LTLoc(@"Enter a name for the playlist.", @"Введите название плейлиста.")
                                                    delegate:self
                                           cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                           otherButtonTitles:LTLoc(@"Create", @"Создать"), nil];
@@ -408,7 +408,7 @@
     if (actionSheet.tag == 10) {
         if (buttonIndex == 0) {
             [[LTPlayerController sharedController] enqueueTracks:@[self.pendingTrack]];
-            [self showToast:@"Added to queue"];
+            [self showToast:LTLoc(@"Added to queue", @"Добавлено в очередь")];
             self.pendingTrack = nil;
         } else if (buttonIndex == 1) {
             [self showPlaylistPickerForTrack:self.pendingTrack];
@@ -417,14 +417,14 @@
             self.pendingTrack = nil;
             if ([[LTPlaylistStore sharedStore] isTrackDownloaded:track]) {
                 [[LTPlaylistStore sharedStore] removeDownloadsForTracks:@[track]];
-                [self showToast:@"Removed download"];
+                [self showToast:LTLoc(@"Removed download", @"Загрузка удалена")];
             } else {
                 if ([[LTPlaylistStore sharedStore] isDownloading]) {
-                    [self showToast:@"A download is already in progress"];
+                    [self showToast:LTLoc(@"A download is already in progress", @"Загрузка уже выполняется")];
                 } else {
                     __weak LTSearchViewController *weakSelf = self;
                     [[LTPlaylistStore sharedStore] downloadTracks:@[track] completion:^{
-                        [weakSelf showToast:@"Downloaded"];
+                        [weakSelf showToast:LTLoc(@"Downloaded", @"Скачано")];
                     }];
                 }
             }
@@ -446,7 +446,7 @@
                 [self showToast:[NSString stringWithFormat:@"Added to %@", playlist.name]];
             } else {
                 [self showLocalPlaylists];
-                [self showToast:@"Playlist created"];
+                [self showToast:LTLoc(@"Playlist created", @"Плейлист создан")];
             }
         }
     }
@@ -509,7 +509,7 @@
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     if ([self hasLocalSection]) {
-        if (section == 0) return @"From Your Library";
+        if (section == 0) return LTLoc(@"From Your Library", @"Из вашей медиатеки");
         if (section == 1) return @"YouTube";
     }
     return nil;
