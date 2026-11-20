@@ -212,8 +212,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
 
 - (void)updateBannerText {
     NSInteger count = [[LTPlaylistStore sharedStore] listenedSongsCount];
-    self.bannerSubtitleLabel.text = [NSString stringWithFormat:@"You've listened to %d song%@.",
-                                     (int)count, count == 1 ? @"" : @"s"];
+    self.bannerSubtitleLabel.text = (LTIsRussian() ? [NSString stringWithFormat:@"Вы прослушали %ld %@.", (long)count, LTRussianPlural(count, @"песню", @"песни", @"песен")] : [NSString stringWithFormat:@"You\u0027ve listened to %@.", LTSongCount(count)]);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -321,7 +320,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
     }
     LTLocalPlaylist *playlist = [self.playlists objectAtIndex:(NSUInteger)indexPath.row];
     cell.textLabel.text = playlist.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d tracks", (int)playlist.tracks.count];
+    cell.detailTextLabel.text = LTTrackCount(playlist.tracks.count);
     cell.accessoryView = nil;
     cell.imageView.image = nil;
     if (playlist.coverPath.length) {
