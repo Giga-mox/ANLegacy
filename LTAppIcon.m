@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTAppIcon.h"
 #import "LTLog.h"
 #import <UIKit/UIKit.h>
@@ -42,9 +43,9 @@ static NSString * const kLTAutoAppliedKey = @"LTAutoIconApplied";
 
 + (NSString *)currentIconLabel {
     NSString *name = [self currentIconName];
-    if ([name isEqualToString:kLTModernName]) return @"Modern";
-    if ([name isEqualToString:kLTRoundedName]) return @"Rounded";
-    return @"Classic";
+    if ([name isEqualToString:kLTModernName]) return LTLoc(@"Modern", @"Современная");
+    if ([name isEqualToString:kLTRoundedName]) return LTLoc(@"Rounded", @"Скруглённая");
+    return LTLoc(@"Classic", @"Классическая");
 }
 
 + (void)applyIconNamed:(NSString *)iconName {
