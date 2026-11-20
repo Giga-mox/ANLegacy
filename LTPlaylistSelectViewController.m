@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTPlaylistSelectViewController.h"
 #import "LTPlaylistStore.h"
 #import "LTSimpleCell.h"
@@ -31,14 +32,14 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Include Playlists";
+    self.title = LTLoc(@"Include Playlists", @"Выбор плейлистов");
     self.view.backgroundColor = [UIColor colorWithWhite:0.11f alpha:1.0f];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
         initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
                              target:self action:@selector(cancelTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
-        initWithTitle:@"Create" style:UIBarButtonItemStyleDone
+        initWithTitle:LTLoc(@"Create", @"Создать") style:UIBarButtonItemStyleDone
                target:self action:@selector(createTapped)];
 
     CGFloat top = 0;
@@ -67,9 +68,9 @@
     NSUInteger selected = self.selectedIdentifiers.count;
     NSUInteger total = self.playlists.count;
     if (!total) {
-        self.footerLabel.text = @"No playlists with downloaded tracks are available.";
+        self.footerLabel.text = LTLoc(@"No playlists with downloaded tracks are available.", @"Нет плейлистов со скачанными песнями.");
     } else {
-        self.footerLabel.text = [NSString stringWithFormat:@"%d of %d playlists will be included.", (int)selected, (int)total];
+        self.footerLabel.text = [NSString stringWithFormat:LTLoc(@"%d of %d playlists will be included.", @"Выбрано плейлистов: %d из %d."), (int)selected, (int)total];
     }
     self.navigationItem.rightBarButtonItem.enabled = selected > 0;
 }
@@ -101,12 +102,12 @@
         cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     }
     LTLocalPlaylist *p = [self.playlists objectAtIndex:indexPath.row];
-    cell.textLabel.text = p.name ?: @"Untitled";
+    cell.textLabel.text = p.name ?: LTLoc(@"Untitled", @"Без названия");
     NSUInteger downloaded = 0;
     for (LTTrack *t in p.tracks) {
         if ([[LTPlaylistStore sharedStore] isTrackDownloaded:t]) downloaded += 1;
     }
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d downloaded", (int)downloaded];
+    cell.detailTextLabel.text = [NSString stringWithFormat:LTLoc(@"%d downloaded", @"Скачано: %d"), (int)downloaded];
     BOOL sel = (p.identifier.length && [self.selectedIdentifiers containsObject:p.identifier]);
     cell.accessoryType = sel ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
     return cell;
