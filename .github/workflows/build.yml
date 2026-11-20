@@ -48,7 +48,7 @@ jobs:
           mkdir -p dist
           deb="$(find packages -name '*.deb' -print -quit)"
           test -n "$deb"
-          python3 deb_to_ipa.py "$deb" "$RUNNER_TEMP/base.ipa"
+          python3 deb_to_ipa.py "$deb" -o "$RUNNER_TEMP/base.ipa"
           # Preserve the original Mach-O SDK, without the upstream modern-device patch.
           python3 - "$RUNNER_TEMP/base.ipa" "$RUNNER_TEMP/arm64.ipa" <<'PY'
           import zipfile, plistlib
