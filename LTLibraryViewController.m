@@ -372,7 +372,7 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     if ([item isKindOfClass:[LTLocalPlaylist class]]) {
         LTLocalPlaylist *playlist = item;
         cell.textLabel.text = playlist.name;
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d track%@", (int)playlist.tracks.count, playlist.tracks.count == 1 ? @"" : @"s"];
+        cell.detailTextLabel.text = LTTrackCount(playlist.tracks.count);
         if (playlist.coverPath.length) {
             cell.imageView.image = [UIImage imageWithContentsOfFile:playlist.coverPath];
         } else if (playlist.tracks.count) {
@@ -393,12 +393,11 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
         if (isArtist) {
             cell.textLabel.text = name;
             cell.accessibilityIdentifier = name;
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%d song%@", (int)tracks.count, tracks.count == 1 ? @"" : @"s"];
+            cell.detailTextLabel.text = LTSongCount(tracks.count);
         } else {
             cell.textLabel.text = name;
             NSString *artist = [bucket objectForKey:@"artist"];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@   %d song%@",
-                                         artist, (int)tracks.count, tracks.count == 1 ? @"" : @"s"];
+            cell.detailTextLabel.text = [NSString stringWithFormat:@"%@   %@", artist, LTSongCount(tracks.count)];
         }
         NSString *avatarURL = isArtist ? [[LTPlaylistStore sharedStore] artistAvatarURLForName:name] : nil;
         if (avatarURL.length) {
