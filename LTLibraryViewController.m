@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTLibraryViewController.h"
 #import "LTLibrarySongsViewController.h"
 #import "LTPlaylistStore.h"
@@ -58,13 +59,13 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Library";
+    self.title = LTLoc(@"Library", @"Медиатека");
     self.view.backgroundColor = [LTTheme background];
     self.currentSegment = LTLibrarySegmentPlaylists;
     self.attemptedArtistAvatars = [NSMutableSet set];
 
     CGRect bounds = self.view.bounds;
-    self.segControl = [[UISegmentedControl alloc] initWithItems:@[@"Playlists", @"Songs", @"Artists", @"Albums"]];
+    self.segControl = [[UISegmentedControl alloc] initWithItems:@[LTLoc(@"Playlists", @"Плейлисты"), LTLoc(@"Songs", @"Песни"), LTLoc(@"Artists", @"Исполнители"), LTLoc(@"Albums", @"Альбомы")]];
     self.segControl.selectedSegmentIndex = 0;
     [self.segControl setTitleTextAttributes:@{UITextAttributeFont: [UIFont boldSystemFontOfSize:11]}
                                    forState:UIControlStateNormal];
@@ -195,11 +196,11 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
                                                                                                action:@selector(newPlaylistTapped:)];
         self.navigationItem.rightBarButtonItem.style = UIBarButtonItemStyleBordered;
     } else if (self.currentSegment == LTLibrarySegmentSongs) {
-        UIBarButtonItem *shuffleItem = [[UIBarButtonItem alloc] initWithTitle:@"Shuffle"
+        UIBarButtonItem *shuffleItem = [[UIBarButtonItem alloc] initWithTitle:LTLoc(@"Shuffle", @"Перемешать")
                                                                         style:UIBarButtonItemStyleBordered
                                                                        target:self
                                                                        action:@selector(shuffleAllTapped)];
-        UIBarButtonItem *playItem = [[UIBarButtonItem alloc] initWithTitle:@"Play All"
+        UIBarButtonItem *playItem = [[UIBarButtonItem alloc] initWithTitle:LTLoc(@"Play All", @"Воспроизвести всё")
                                                                      style:UIBarButtonItemStyleBordered
                                                                     target:self
                                                                     action:@selector(playAllTapped)];
@@ -217,7 +218,7 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     if (!self.songs.count) return;
     LTPlayerController *player = [LTPlayerController sharedController];
     player.repeatMode = LTRepeatModeAll;
-    player.queueSourceName = @"Library";
+    player.queueSourceName = LTLoc(@"Library", @"Медиатека");
     [player playQueue:self.songs shuffle:YES];
     [(LTTabBarController *)self.tabBarController showNowPlaying];
 }
@@ -226,7 +227,7 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     if (!self.songs.count) return;
     LTPlayerController *player = [LTPlayerController sharedController];
     player.repeatMode = LTRepeatModeAll;
-    player.queueSourceName = @"Library";
+    player.queueSourceName = LTLoc(@"Library", @"Медиатека");
     [player playQueue:self.songs atIndex:0];
     [(LTTabBarController *)self.tabBarController showNowPlaying];
 }
@@ -239,15 +240,15 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     }
     switch (self.currentSegment) {
         case LTLibrarySegmentPlaylists:
-            self.emptyLabel.text = @"No playlists yet.\nTap + to create one.";
+            self.emptyLabel.text = LTLoc(@"No playlists yet.\nTap + to create one.", @"Плейлистов пока нет.\nНажмите +, чтобы создать плейлист.");
             break;
         case LTLibrarySegmentSongs:
-            self.emptyLabel.text = @"No downloaded songs yet.\nUse the download button in Search or in a playlist.";
+            self.emptyLabel.text = LTLoc(@"No downloaded songs yet.\nUse the download button in Search or in a playlist.", @"Нет скачанных песен.\nИспользуйте кнопку загрузки в поиске или плейлисте.");
             break;
         case LTLibrarySegmentArtists:
         case LTLibrarySegmentAlbums:
         default:
-            self.emptyLabel.text = @"Download songs to build your library.";
+            self.emptyLabel.text = LTLoc(@"Download songs to build your library.", @"Скачайте песни, чтобы пополнить медиатеку.");
             break;
     }
     self.emptyLabel.hidden = NO;
@@ -261,11 +262,11 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
 }
 
 - (void)newPlaylistTapped:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Playlist"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"New Playlist", @"Новый плейлист")
                                                     message:@"Enter a name for the playlist."
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Create", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Create", @"Создать"), nil];
     alert.tag = 700;
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
@@ -478,11 +479,11 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     LTTrack *track = [items objectAtIndex:(NSUInteger)row];
     if (![[LTPlaylistStore sharedStore] isTrackDownloaded:track]) return;
     self.pendingRemoveTrack = track;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Remove Download"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Remove Download", @"Удалить загрузку")
                                                     message:[NSString stringWithFormat:@"Remove \"%@\" from your offline downloads?", track.title]
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Remove", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Remove", @"Удалить"), nil];
     alert.tag = 620;
     [alert show];
 }
@@ -527,7 +528,7 @@ typedef NS_ENUM(NSInteger, LTLibrarySegment) {
     id item = [items objectAtIndex:(NSUInteger)indexPath.row];
 
     if (self.currentSegment == LTLibrarySegmentSongs) {
-        [LTPlayerController sharedController].queueSourceName = @"Library";
+        [LTPlayerController sharedController].queueSourceName = LTLoc(@"Library", @"Медиатека");
         [[LTPlayerController sharedController] playQueue:[self currentItems] atIndex:indexPath.row];
         [(LTTabBarController *)self.tabBarController showNowPlaying];
     } else if (self.currentSegment == LTLibrarySegmentPlaylists && [item isKindOfClass:[LTLocalPlaylist class]]) {
