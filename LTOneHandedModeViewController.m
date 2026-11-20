@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTOneHandedModeViewController.h"
 #import "LTOneHandedMode.h"
 #import "LTAppDelegate.h"
@@ -14,7 +15,7 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"One-Handed Mode";
+    self.title = LTLoc(@"One-Handed Mode", @"Управление одной рукой");
     self.view.backgroundColor = [LTTheme groupedBackground];
 
     self.tableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
@@ -48,7 +49,7 @@
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
-    return @"Shrinks the app to the classic screen size and pins it to a bottom corner so it is easier to reach with one hand.";
+    return LTLoc(@"Shrinks the app to the classic screen size and pins it to a bottom corner so it is easier to reach with one hand.", @"Уменьшает интерфейс и закрепляет его в нижнем углу для управления одной рукой.");
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
