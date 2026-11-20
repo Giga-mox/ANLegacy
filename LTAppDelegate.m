@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTAppDelegate.h"
 #import "LTSearchViewController.h"
 #import "LTLibraryViewController.h"
@@ -66,27 +67,27 @@ static void LTUncaughtExceptionHandler(NSException *e) {
     NSMutableArray *controllers = [NSMutableArray array];
 
     LTHomeViewController *home = [[LTHomeViewController alloc] init];
-    home.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Home" image:[LTGraphics homeIcon] tag:0];
+    home.tabBarItem = [[UITabBarItem alloc] initWithTitle:LTLoc(@"Home", @"Главная") image:[LTGraphics homeIcon] tag:0];
     UINavigationController *homeNav = [[UINavigationController alloc] initWithRootViewController:home];
     [controllers addObject:homeNav];
 
     LTSearchViewController *search = [[LTSearchViewController alloc] initWithType:@"songs"];
-    search.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Search" image:[LTGraphics searchIcon] tag:0];
+    search.tabBarItem = [[UITabBarItem alloc] initWithTitle:LTLoc(@"Search", @"Поиск") image:[LTGraphics searchIcon] tag:0];
     UINavigationController *searchNav = [[UINavigationController alloc] initWithRootViewController:search];
     [controllers addObject:searchNav];
 
     LTLibraryViewController *library = [[LTLibraryViewController alloc] init];
-    library.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Library" image:[LTGraphics libraryIcon] tag:0];
+    library.tabBarItem = [[UITabBarItem alloc] initWithTitle:LTLoc(@"Library", @"Медиатека") image:[LTGraphics libraryIcon] tag:0];
     UINavigationController *libraryNav = [[UINavigationController alloc] initWithRootViewController:library];
     [controllers addObject:libraryNav];
 
     LTSettingsViewController *settings = [[LTSettingsViewController alloc] init];
-    settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Settings" image:[LTGraphics settingsIcon] tag:0];
+    settings.tabBarItem = [[UITabBarItem alloc] initWithTitle:LTLoc(@"Settings", @"Настройки") image:[LTGraphics settingsIcon] tag:0];
     UINavigationController *settingsNav = [[UINavigationController alloc] initWithRootViewController:settings];
     [controllers addObject:settingsNav];
 
     LTPlayerViewController *nowPlaying = [[LTPlayerViewController alloc] init];
-    nowPlaying.tabBarItem = [[UITabBarItem alloc] initWithTitle:@"Now Playing"
+    nowPlaying.tabBarItem = [[UITabBarItem alloc] initWithTitle:LTLoc(@"Now Playing", @"Плеер")
                                                           image:[LTGraphics playIcon]
                                                             tag:0];
     UINavigationController *nowPlayingNav = [[UINavigationController alloc] initWithRootViewController:nowPlaying];
