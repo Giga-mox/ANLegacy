@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTDownloadQueueViewController.h"
 #import "LTPlaylistStore.h"
 #import "LTModel.h"
@@ -15,7 +16,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"Download Queue";
+    self.title = LTLoc(@"Download Queue", @"Очередь загрузок");
     self.view.backgroundColor = [UIColor colorWithWhite:0.07 alpha:1.0f];
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -59,7 +60,7 @@
     self.toggleButton.frame = CGRectMake(self.view.bounds.size.width - 92, 4, 78, 26);
     self.toggleButton.backgroundColor = [UIColor colorWithWhite:0.28 alpha:1.0f];
     self.toggleButton.layer.cornerRadius = 5.0f;
-    [self.toggleButton setTitle:@"Pause" forState:UIControlStateNormal];
+    [self.toggleButton setTitle:LTLoc(@"Pause", @"Пауза") forState:UIControlStateNormal];
     [self.toggleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     self.toggleButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [self.toggleButton addTarget:self action:@selector(toggleTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -69,7 +70,7 @@
     self.clearButton.frame = CGRectMake(self.view.bounds.size.width - 92, 32, 78, 24);
     self.clearButton.backgroundColor = [UIColor colorWithRed:0.55 green:0.16 blue:0.16 alpha:1.0f];
     self.clearButton.layer.cornerRadius = 5.0f;
-    [self.clearButton setTitle:@"Clear All" forState:UIControlStateNormal];
+    [self.clearButton setTitle:LTLoc(@"Clear All", @"Очистить всё") forState:UIControlStateNormal];
     [self.clearButton setTitleColor:[UIColor colorWithRed:1.0f green:0.4f blue:0.4f alpha:1.0f] forState:UIControlStateNormal];
     self.clearButton.titleLabel.font = [UIFont systemFontOfSize:13];
     [self.clearButton addTarget:self action:@selector(clearTapped:) forControlEvents:UIControlEventTouchUpInside];
@@ -99,7 +100,7 @@
     self.emptyLabel.font = [UIFont systemFontOfSize:14];
     self.emptyLabel.textAlignment = NSTextAlignmentCenter;
     self.emptyLabel.numberOfLines = 2;
-    self.emptyLabel.text = @"Nothing queued.\nUse the download button on a song or playlist to add it here.";
+    self.emptyLabel.text = LTLoc(@"Nothing queued.\nUse the download button on a song or playlist to add it here.", @"Очередь пуста.\nНажмите кнопку загрузки песни или плейлиста.");
     [self.view addSubview:self.emptyLabel];
 }
 
@@ -115,13 +116,13 @@
     NSInteger pending = (NSInteger)self.tracks.count;
     BOOL busy = [store isDownloading];
     if (pending == 0) {
-        self.statusLabel.text = @"Queue empty";
+        self.statusLabel.text = LTLoc(@"Queue empty", @"Очередь пуста");
     } else if (busy) {
-        self.statusLabel.text = [NSString stringWithFormat:@"Downloading... %d left", (int)pending];
+        self.statusLabel.text = [NSString stringWithFormat:LTLoc(@"Downloading... %d left", @"Загрузка… осталось: %d"), (int)pending];
     } else {
-        self.statusLabel.text = [NSString stringWithFormat:@"Paused - %d waiting", (int)pending];
+        self.statusLabel.text = [NSString stringWithFormat:LTLoc(@"Paused - %d waiting", @"Пауза — ожидает: %d"), (int)pending];
     }
-    [self.toggleButton setTitle:(busy ? @"Pause" : @"Resume") forState:UIControlStateNormal];
+    [self.toggleButton setTitle:(busy ? LTLoc(@"Pause", @"Пауза") : LTLoc(@"Resume", @"Продолжить")) forState:UIControlStateNormal];
     self.toggleButton.enabled = (pending > 0);
     self.clearButton.enabled = (pending > 0);
     self.clearButton.alpha = (pending > 0) ? 1.0f : 0.4f;
@@ -143,11 +144,11 @@
 }
 
 - (void)clearTapped:(id)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Clear Download Queue"
-                                                    message:@"Remove all queued downloads? Tracks already downloaded are kept."
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Clear Download Queue", @"Очистить очередь загрузок")
+                                                    message:LTLoc(@"Remove all queued downloads? Tracks already downloaded are kept.", @"Удалить все ожидающие загрузки? Скачанные песни сохранятся.")
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Clear", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Clear", @"Очистить"), nil];
     alert.tag = 700;
     [alert show];
 }
