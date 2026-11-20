@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTP2PSync.h"
 #import "LTSyncServer.h"
 #import "LTPlaylistStore.h"
@@ -124,8 +125,8 @@ static NSMutableArray *LTP2PActiveSyncs;
         [strongSelf showFailure:@"Could not find another device. Make sure both devices are on the same Wi-Fi network and that you pressed \"Sync with Another Device\" on both."];
     });
 
-    [self showStatus:@"Waiting for Another Device…"
-             message:@"Press \"Sync with Another Device\" on your second device. Both devices must be on the same Wi-Fi network."];
+    [self showStatus:LTLoc(@"Waiting for Another Device…", @"Ожидание другого устройства…")
+             message:LTLoc(@"Press \"Sync with Another Device\" on your second device. Both devices must be on the same Wi-Fi network.", @"Нажмите «Синхронизация устройств» на втором устройстве. Оба устройства должны быть в одной сети Wi-Fi.")];
 }
 
 #pragma mark - Version compatibility
@@ -181,7 +182,7 @@ static NSMutableArray *LTP2PActiveSyncs;
     self.statusAlert = [[UIAlertView alloc] initWithTitle:title
                                                   message:message
                                                  delegate:self
-                                        cancelButtonTitle:@"Cancel"
+                                        cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                         otherButtonTitles:nil];
     [self.statusAlert show];
 }
@@ -192,8 +193,8 @@ static NSMutableArray *LTP2PActiveSyncs;
 }
 
 - (void)showDoneAlert {
-    NSString *title = @"Library Synced";
-    NSString *message = @"Playlists, library, recent songs and listening stats from both devices are now on both devices.";
+    NSString *title = LTLoc(@"Library Synced", @"Медиатека синхронизирована");
+    NSString *message = LTLoc(@"Playlists, library, recent songs and listening stats from both devices are now on both devices.", @"Плейлисты, медиатека, недавние песни и статистика теперь доступны на обоих устройствах.");
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                     message:message
                                                    delegate:nil
@@ -203,8 +204,8 @@ static NSMutableArray *LTP2PActiveSyncs;
 }
 
 - (void)showFailure:(NSString *)reason {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Sync Failed"
-                                                    message:reason.length ? reason : @"Could not connect to the other device."
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Sync Failed", @"Ошибка синхронизации")
+                                                    message:reason.length ? reason : LTLoc(@"Could not connect to the other device.", @"Не удалось подключиться к другому устройству.")
                                                    delegate:nil
                                           cancelButtonTitle:@"OK"
                                           otherButtonTitles:nil];
