@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTStatsViewController.h"
 #import "LTPlaylistStore.h"
 #import "LTPlayerController.h"
@@ -27,9 +28,9 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
     NSInteger s = (NSInteger)seconds;
     NSInteger h = s / 3600;
     NSInteger m = (s % 3600) / 60;
-    if (h > 0) return [NSString stringWithFormat:@"%dh %dm", (int)h, (int)m];
-    if (m > 0) return [NSString stringWithFormat:@"%dm %ds", (int)m, (int)(s % 60)];
-    return [NSString stringWithFormat:@"%ds", (int)s];
+    if (h > 0) return [NSString stringWithFormat:LTLoc(@"%dh %dm", @"%d ч %d мин"), (int)h, (int)m];
+    if (m > 0) return [NSString stringWithFormat:LTLoc(@"%dm %ds", @"%d мин %d с"), (int)m, (int)(s % 60)];
+    return [NSString stringWithFormat:LTLoc(@"%ds", @"%d с"), (int)s];
 }
 
 - (void)viewDidLoad {
@@ -37,7 +38,7 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Listening Stats";
+    self.title = LTLoc(@"Listening Stats", @"Статистика прослушивания");
     self.view.backgroundColor = [LTTheme groupedBackground];
 
     CGRect bounds = self.view.bounds;
@@ -56,7 +57,7 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
     UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, width, 96)];
     header.backgroundColor = [LTTheme groupedBackground];
 
-    NSArray *titles = @[@"Time Listened", @"Unique Songs", @"Plays"];
+    NSArray *titles = @[LTLoc(@"Time Listened", @"Время прослушивания"), LTLoc(@"Unique Songs", @"Уникальные песни"), LTLoc(@"Plays", @"Прослушивания")];
     UILabel *totalTimeLabel = nil;
     UILabel *songsLabel = nil;
     UILabel *playsLabel = nil;
@@ -151,7 +152,7 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    NSString *title = (section == 0) ? @"Most Played" : @"Top Artists";
+    NSString *title = (section == 0) ? LTLoc(@"Most Played", @"Часто прослушиваемые") : LTLoc(@"Top Artists", @"Популярные исполнители");
     BOOL hasMore;
     if (section == 0) {
         hasMore = _allMostPlayed.count > 5;
@@ -174,7 +175,7 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
         button.frame = CGRectMake(width - 86, 3, 70, 24);
         button.tag = section;
-        [button setTitle:@"See All" forState:UIControlStateNormal];
+        [button setTitle:LTLoc(@"See All", @"Показать все") forState:UIControlStateNormal];
         button.titleLabel.font = [UIFont systemFontOfSize:13];
         [button setTitleColor:[UIColor colorWithRed:0.1f green:0.4f blue:0.85f alpha:1.0f]
                      forState:UIControlStateNormal];
@@ -207,8 +208,8 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
             cell.detailTextLabel.textColor = [LTTheme secondaryText];
         }
         LTStatsEntry *entry = [_mostPlayed objectAtIndex:(NSUInteger)indexPath.row];
-        cell.textLabel.text = entry.title.length ? entry.title : @"Unknown Song";
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%d plays  •  %@",
+        cell.textLabel.text = entry.title.length ? entry.title : LTLoc(@"Unknown Song", @"Неизвестная песня");
+        cell.detailTextLabel.text = [NSString stringWithFormat:LTLoc(@"%d plays  •  %@", @"Прослушиваний: %d  •  %@"),
                                      (int)entry.plays, LTFormatDuration(entry.seconds)];
         cell.accessoryType = UITableViewCellAccessoryNone;
         cell.imageView.image = nil;
@@ -231,7 +232,7 @@ static NSString *LTFormatDuration(NSTimeInterval seconds) {
         cell.textLabel.text = [row objectForKey:@"name"];
         NSTimeInterval seconds = [[row objectForKey:@"seconds"] doubleValue];
         NSInteger plays = [[row objectForKey:@"plays"] integerValue];
-        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@  •  %d plays",
+        cell.detailTextLabel.text = [NSString stringWithFormat:LTLoc(@"%@  •  %d plays", @"%@  •  Прослушиваний: %d"),
                                      LTFormatDuration(seconds), (int)plays];
         cell.accessoryType = UITableViewCellAccessoryNone;
         return cell;
