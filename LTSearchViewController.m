@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTSearchViewController.h"
 #import "LTYouTubeClient.h"
 #import "LTModel.h"
@@ -57,7 +58,7 @@
     CGFloat tableY = 0;
 
     if (![self isPlaylistsMode]) {
-        self.title = @"Search";
+        self.title = LTLoc(@"Search", @"Поиск");
         self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, bounds.size.width, 44)];
         self.searchBar.placeholder = [self searchPlaceholderForType:self.type];
         self.searchBar.delegate = self;
@@ -69,7 +70,7 @@
         NSArray *types = @[@"songs", @"videos", @"albums", @"artists"];
         NSUInteger defaultIndex = [types indexOfObject:self.type];
         if (defaultIndex == NSNotFound) defaultIndex = 0;
-        self.segControl = [[UISegmentedControl alloc] initWithItems:@[@"Songs", @"Videos", @"Albums", @"Artists"]];
+        self.segControl = [[UISegmentedControl alloc] initWithItems:@[LTLoc(@"Songs", @"Песни"), LTLoc(@"Videos", @"Видео"), LTLoc(@"Albums", @"Альбомы"), LTLoc(@"Artists", @"Исполнители")]];
         self.segControl.selectedSegmentIndex = (NSInteger)defaultIndex;
         [self.segControl addTarget:self action:@selector(segmentChanged:) forControlEvents:UIControlEventValueChanged];
         self.segControl.frame = CGRectMake(8, 50, bounds.size.width - 16, 32);
@@ -78,7 +79,7 @@
 
         tableY = 88;
     } else {
-        self.title = @"Playlists";
+        self.title = LTLoc(@"Playlists", @"Плейлисты");
     }
 
     self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, tableY, bounds.size.width, bounds.size.height - tableY)
@@ -226,7 +227,7 @@
                                                                                            target:self
                                                                                            action:@selector(newPlaylistTapped:)];
     if (!playlists.count) {
-        self.emptyLabel.text = @"No playlists yet.\nTap + to create one.";
+        self.emptyLabel.text = LTLoc(@"No playlists yet.\nTap + to create one.", @"Плейлистов пока нет.\nНажмите +, чтобы создать плейлист.");
         self.emptyLabel.hidden = NO;
     } else {
         self.emptyLabel.hidden = YES;
@@ -244,7 +245,7 @@
     [self.tableView reloadData];
     NSArray *history = [[LTPlaylistStore sharedStore] searchHistory];
     if (!history.count) {
-        self.emptyLabel.text = @"No search history yet.\nSearch YouTube above to get started.";
+        self.emptyLabel.text = LTLoc(@"No search history yet.\nSearch YouTube above to get started.", @"История поиска пуста.\nВведите поисковый запрос.");
         self.emptyLabel.hidden = NO;
     } else {
         self.emptyLabel.hidden = YES;
@@ -287,7 +288,7 @@
         strongSelf.loading = NO;
         [strongSelf showSpinner:NO];
         if (error) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Search Failed"
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Search Failed", @"Ошибка поиска")
                                                             message:error.localizedDescription
                                                            delegate:nil
                                                   cancelButtonTitle:@"OK"
@@ -365,9 +366,9 @@
     NSString *lastOption = [[LTPlaylistStore sharedStore] isTrackDownloaded:track] ? @"Remove Download" : @"Download";
     UIActionSheet *sheet = [[UIActionSheet alloc] initWithTitle:track.title
                                                        delegate:self
-                                              cancelButtonTitle:@"Cancel"
+                                              cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                          destructiveButtonTitle:nil
-                                              otherButtonTitles:@"Add to Queue", @"Add to Playlist...", lastOption, nil];
+                                              otherButtonTitles:LTLoc(@"Add to Queue", @"Добавить в очередь"), LTLoc(@"Add to Playlist...", @"Добавить в плейлист…"), lastOption, nil];
     sheet.tag = 10;
     [sheet showInView:self.view];
 }
@@ -391,11 +392,11 @@
 
 - (void)promptForPlaylistNameWithTrack:(LTTrack *)track {
     self.pendingTrack = track;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"New Playlist"
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"New Playlist", @"Новый плейлист")
                                                     message:@"Enter a name for the playlist."
                                                    delegate:self
-                                          cancelButtonTitle:@"Cancel"
-                                          otherButtonTitles:@"Create", nil];
+                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
+                                          otherButtonTitles:LTLoc(@"Create", @"Создать"), nil];
     alert.tag = 200;
     alert.alertViewStyle = UIAlertViewStylePlainTextInput;
     [alert show];
@@ -547,7 +548,7 @@
         cell.detailTextLabel.textColor = [LTTheme secondaryText];
     }
     if ([self hasLocalSection] && indexPath.section == 0 && !self.localResults.count) {
-        cell.textLabel.text = @"No matches in your library";
+        cell.textLabel.text = LTLoc(@"No matches in your library", @"В медиатеке ничего не найдено");
         cell.textLabel.textColor = [LTTheme secondaryText];
         cell.detailTextLabel.text = @"";
         cell.accessoryView = nil;
@@ -637,7 +638,7 @@
 - (void)refreshEmptyState {
     if (![self isPlaylistsMode]) return;
     if (!self.results.count) {
-        self.emptyLabel.text = @"No playlists yet.\nTap + to create one.";
+        self.emptyLabel.text = LTLoc(@"No playlists yet.\nTap + to create one.", @"Плейлистов пока нет.\nНажмите +, чтобы создать плейлист.");
         self.emptyLabel.hidden = NO;
     } else {
         self.emptyLabel.hidden = YES;
