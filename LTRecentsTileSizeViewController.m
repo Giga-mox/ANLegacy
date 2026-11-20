@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTRecentsTileSizeViewController.h"
 #import "LTHomeViewController.h"
 
@@ -15,14 +16,14 @@
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Recents Tile Size";
+    self.title = LTLoc(@"Recents Tile Size", @"Размер плиток");
     self.view.backgroundColor = [UIColor colorWithWhite:0.15f alpha:1.0f];
 
     CGFloat width = self.view.bounds.size.width;
     CGFloat pad = 20.0f;
 
     UILabel *desc = [[UILabel alloc] initWithFrame:CGRectMake(pad, 20, width - pad * 2, 40)];
-    desc.text = @"Controls how large the Recently Played tiles appear on the Home tab.";
+    desc.text = LTLoc(@"Controls how large the Recently Played tiles appear on the Home tab.", @"Размер плиток недавно прослушанных песен на главной.");
     desc.font = [UIFont systemFontOfSize:14];
     desc.textColor = [UIColor lightGrayColor];
     desc.backgroundColor = [UIColor clearColor];
@@ -46,7 +47,7 @@
     [self.view addSubview:self.slider];
 
     self.smallLabel = [[UILabel alloc] initWithFrame:CGRectMake(pad, 158, width / 2.0f - pad, 20)];
-    self.smallLabel.text = @"Small";
+    self.smallLabel.text = LTLoc(@"Small", @"Маленькие");
     self.smallLabel.font = [UIFont systemFontOfSize:14];
     self.smallLabel.textColor = [UIColor whiteColor];
     self.smallLabel.backgroundColor = [UIColor clearColor];
@@ -54,7 +55,7 @@
     [self.view addSubview:self.smallLabel];
 
     self.largeLabel = [[UILabel alloc] initWithFrame:CGRectMake(width / 2.0f, 158, width / 2.0f - pad, 20)];
-    self.largeLabel.text = @"Large";
+    self.largeLabel.text = LTLoc(@"Large", @"Большие");
     self.largeLabel.font = [UIFont systemFontOfSize:14];
     self.largeLabel.textColor = [UIColor whiteColor];
     self.largeLabel.backgroundColor = [UIColor clearColor];
