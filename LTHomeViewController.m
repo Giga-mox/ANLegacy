@@ -212,7 +212,7 @@ const CGFloat kHomeTileArtRatio = 104.0f / 116.0f;
 
 - (void)updateBannerText {
     NSInteger count = [[LTPlaylistStore sharedStore] listenedSongsCount];
-    self.bannerSubtitleLabel.text = (LTIsRussian() ? [NSString stringWithFormat:@"Вы прослушали %ld %@.", (long)count, LTRussianPlural(count, @"песню", @"песни", @"песен")] : [NSString stringWithFormat:@"You\u0027ve listened to %@.", LTSongCount(count)]);
+    self.bannerSubtitleLabel.text = (LTIsRussian() ? [NSString stringWithFormat:@"Вы прослушали %ld %@.", (long)count, LTRussianPlural(count, @"песню", @"песни", @"песен")] : [NSString stringWithFormat:@"You've listened to %@.", LTSongCount(count)]);
 }
 
 - (void)viewWillAppear:(BOOL)animated {
