@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import <QuartzCore/QuartzCore.h>
 #import <CoreGraphics/CoreGraphics.h>
 #import <sys/utsname.h>
@@ -92,7 +93,7 @@ static BOOL sHasShownSwipeHint = NO;
     if ([self respondsToSelector:@selector(setEdgesForExtendedLayout:)]) {
         self.edgesForExtendedLayout = UIRectEdgeNone;
     }
-    self.title = @"Now Playing";
+    self.title = LTLoc(@"Now Playing", @"Сейчас играет");
     self.view.backgroundColor = [UIColor colorWithWhite:0.15f alpha:1.0f];
     // The queue/stats drawers slide in from the edges. Without clipping their
     // closed frames (which sit just outside the view) would render over the
@@ -239,7 +240,7 @@ static BOOL sHasShownSwipeHint = NO;
     }
 
     self.pagesHint = [[UILabel alloc] init];
-    self.pagesHint.text = @"Swipe down for queue   \u00B7   Swipe up for lyrics";
+    self.pagesHint.text = LTLoc(@"Swipe down for queue   \u00B7   Swipe up for lyrics", @"Вниз — очередь   ·   Вверх — текст");
     self.pagesHint.textAlignment = NSTextAlignmentCenter;
     self.pagesHint.font = [UIFont boldSystemFontOfSize:12];
     self.pagesHint.textColor = [UIColor colorWithWhite:0.85f alpha:0.85f];
@@ -1257,7 +1258,7 @@ static BOOL sHasShownSwipeHint = NO;
         self.queueHeader.text = [NSString stringWithFormat:@"Up Next  (%d track%@)",
                                  (int)count, count == 1 ? @"" : @"s"];
     } else {
-        self.queueHeader.text = @"Queue is empty";
+        self.queueHeader.text = LTLoc(@"Queue is empty", @"Очередь пуста");
     }
     [self.queueTable reloadData];
     // iOS can drop the table out of editing mode during reloads, which hides
@@ -1271,7 +1272,7 @@ static BOOL sHasShownSwipeHint = NO;
 
 - (void)buildStatsPane {
     self.lyricsTitle = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.lyricsTitle.text = @"Lyrics";
+    self.lyricsTitle.text = LTLoc(@"Lyrics", @"Текст песни");
     self.lyricsTitle.font = [UIFont boldSystemFontOfSize:14];
     self.lyricsTitle.textColor = [UIColor colorWithRed:0.35f green:0.68f blue:1.0f alpha:1.0f];
     self.lyricsTitle.textAlignment = NSTextAlignmentCenter;
@@ -1412,7 +1413,7 @@ static BOOL sHasShownSwipeHint = NO;
     [self refreshLyricsForCurrentTrack];
     LTTrack *track = [[LTPlayerController sharedController] currentTrack];
     if (!track) {
-        self.titleLabel.text = @"Nothing playing";
+        self.titleLabel.text = LTLoc(@"Nothing playing", @"Ничего не играет");
         self.artistLabel.text = @"";
         self.artworkView.image = nil;
         if (self.backgroundImageView) self.backgroundImageView.image = nil;
