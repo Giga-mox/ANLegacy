@@ -18,6 +18,7 @@ LegacyMusic_FILES = main.m \
 	LTAppDelegate.m \
 	LTModel.m \
 	LTYouTubeClient.m \
+	LTGooglePlaylists.m \
 	LTTabBarController.m \
 	LTSplitContainerViewController.m \
 	LTHomeViewController.m \
