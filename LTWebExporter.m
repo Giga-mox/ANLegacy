@@ -121,7 +121,9 @@ static NSString *const kWebDataMarker = @"<!--WEB_DATA-->";
         for (NSString *key in labels) {
             template = [template stringByReplacingOccurrencesOfString:key withString:[labels objectForKey:key]];
         }
-        template = [template stringByReplacingOccurrencesOfString:@"+' songs'" withString:@"+' треков'"];
+        template = [template stringByReplacingOccurrencesOfString:@"(p.tracks?p.tracks.length:0)+' songs'" withString:@"miniSongCount(p.tracks?p.tracks.length:0)"];
+        template = [template stringByReplacingOccurrencesOfString:@"var L ="
+            withString:@"function miniSongCount(n){var a=n%10,b=n%100;return n+' '+(b>=11&&b<=14?'треков':a===1?'трек':a>=2&&a<=4?'трека':'треков');}\\n  var L ="];
     }
 
 
