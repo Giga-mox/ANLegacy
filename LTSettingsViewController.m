@@ -62,6 +62,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self applyTheme];
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:LTLoc(@"Back", @"Назад") style:UIBarButtonItemStylePlain target:nil action:nil];
     [self.tableView reloadData];
 }
 
@@ -187,7 +188,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 
 - (void)clearSearchHistoryTapped {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Clear Search History", @"Очистить историю поиска")
-                                                    message:LTLoc(@"Remove all saved search terms?", @"Удалить всю историю поиска?")
+                                                    message:LTLoc(LTLoc(@"Remove all saved search terms?", @"Удалить всю историю поиска?"), @"Удалить всю историю поиска?")
                                                    delegate:self
                                           cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                           otherButtonTitles:LTLoc(@"Clear", @"Очистить"), nil];
@@ -197,7 +198,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 
 - (void)resetStatsTapped {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Reset Listening Stats", @"Сбросить статистику")
-                                                    message:@"This clears the Stats screen, the most-played list, the listening counter, any stats synced from other devices, and listening history. This cannot be undone."
+                                                    message:LTLoc(@"This clears the Stats screen, the most-played list, the listening counter, any stats synced from other devices, and listening history. This cannot be undone.", @"Будет очищена статистика прослушивания, список часто прослушиваемых песен, счётчик, синхронизированная статистика и история. Это действие нельзя отменить.")
                                                    delegate:self
                                           cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                           otherButtonTitles:LTLoc(@"Reset", @"Сбросить"), nil];
@@ -217,7 +218,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     if (self.refreshingMetadata) return;
     NSInteger count = [[LTPlaylistStore sharedStore] offlineTrackCount];
     if (!count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"No Offline Songs", @"Нет скачанных песен")
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(LTLoc(@"No Offline Songs", @"Нет скачанных песен"), @"Нет скачанных песен")
                                                         message:LTLoc(@"Download some tracks to a playlist first.", @"Сначала скачайте песни в плейлист.")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
@@ -226,7 +227,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         return;
     }
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Refresh Metadata", @"Обновить метаданные")
-                                                    message:[NSString stringWithFormat:@"Re-fetch titles, artists, durations and full-res album art for %d offline track(s)?", (int)count]
+                                                    message:[NSString stringWithFormat:LTLoc(@"Re-fetch titles, artists, durations and full-res album art for %d offline track(s)?", @"Обновить названия, исполнителей, длительность и обложки высокого качества для %d скачанных треков?"), (int)count]
                                                    delegate:self
                                           cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                           otherButtonTitles:LTLoc(@"Refresh", @"Обновить"), nil];
@@ -275,8 +276,8 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
     LTPlaylistStore *store = [LTPlaylistStore sharedStore];
     NSInteger count = [store offlineFileCount];
     if (!count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Nothing to Export", @"Нечего экспортировать")
-                                                        message:@"Download some tracks to a playlist first, then you can create an AN Mini instance."
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(LTLoc(@"Nothing to Export", @"Нечего экспортировать"), @"Нечего экспортировать")
+                                                        message:LTLoc(@"Download some tracks to a playlist first, then you can create an AN Mini instance.", @"Сначала скачайте песни в плейлист, затем можно создать AN Mini.")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -294,8 +295,8 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
         if (hasDownloaded) [eligible addObject:p];
     }
     if (!eligible.count) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(@"Nothing to Export", @"Нечего экспортировать")
-                                                        message:@"Download some tracks to a playlist first, then you can create an AN Mini instance."
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:LTLoc(LTLoc(@"Nothing to Export", @"Нечего экспортировать"), @"Нечего экспортировать")
+                                                        message:LTLoc(@"Download some tracks to a playlist first, then you can create an AN Mini instance.", @"Сначала скачайте песни в плейлист, затем можно создать AN Mini.")
                                                        delegate:nil
                                               cancelButtonTitle:@"OK"
                                               otherButtonTitles:nil];
@@ -317,8 +318,8 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 }
 
 - (void)startWebExportWithPlaylists:(NSArray *)identifiers {
-    UIAlertView *progress = [[UIAlertView alloc] initWithTitle:@"Creating AN Mini"
-                                                       message:@"Downloading missing artwork, then packaging your tracks…"
+    UIAlertView *progress = [[UIAlertView alloc] initWithTitle:LTLoc(@"Creating AN Mini", @"Создание AN Mini")
+                                                       message:LTLoc(@"Downloading missing artwork, then packaging your tracks…", @"Загрузка недостающих обложек и упаковка песен…")
                                                       delegate:nil
                                              cancelButtonTitle:nil
                                              otherButtonTitles:nil];
@@ -335,11 +336,11 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
             NSString *title;
             NSString *message;
             if (outDir) {
-                title = @"AN Mini Created";
-                message = [NSString stringWithFormat:@"Your audioNINJA Mini was written to:\n%@\n\nCopy that folder to any computer or phone, then open its index.html to listen. It works fully offline.", outDir];
+                title = LTLoc(@"AN Mini Created", @"AN Mini создан");
+                message = [NSString stringWithFormat:LTLoc(@"Your audioNINJA Mini was written to:\n%@\n\nCopy that folder to any computer or phone, then open its index.html to listen. It works fully offline.", @"AN Mini сохранён в папку:\n%@\n\nПеренесите её на компьютер или телефон и откройте index.html. Интернет не требуется."), outDir];
             } else {
-                title = @"Create Failed";
-                message = error.localizedDescription ?: @"Something went wrong while creating your AN Mini.";
+                title = LTLoc(@"Create Failed", @"Ошибка создания");
+                message = error.localizedDescription ?: LTLoc(@"Something went wrong while creating your AN Mini.", @"Во время создания AN Mini произошла ошибка.");
             }
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
                                                             message:message
@@ -354,7 +355,7 @@ typedef NS_ENUM(NSInteger, LTSettingsSection) {
 
 - (void)presentIconPicker {
     UIAlertView *sheet = [[UIAlertView alloc] initWithTitle:LTLoc(@"App Icon", @"Иконка приложения")
-                                                   message:@"Pick which icon revision shows on the Home Screen. iOS will confirm the change."
+                                                   message:LTLoc(@"Pick which icon revision shows on the Home Screen. iOS will confirm the change.", @"Выберите иконку для экрана «Домой». iOS попросит подтвердить изменение.")
                                                   delegate:self
                                          cancelButtonTitle:LTLoc(@"Cancel", @"Отмена")
                                          otherButtonTitles:LTLoc(@"Classic", @"Классическая"), LTLoc(@"Rounded", @"Скруглённая"), LTLoc(@"Modern", @"Современная"), nil];
