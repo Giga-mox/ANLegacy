@@ -106,14 +106,14 @@ static NSString *const kWebDataMarker = @"<!--WEB_DATA-->";
     // Replace only user-facing text, never playlist or audio metadata.
     if (LTIsRussian()) {
         NSDictionary *labels = @{
-            @"<html lang=\\"en\\">": @"<html lang=\\"ru\\">",
+            @"<html lang=\"en\">": @"<html lang=\"ru\">",
             @">Playlists</span>": @">Плейлисты</span>",
             @">All Tracks</span>": @">Все треки</span>",
             @"<h3>Playlists</h3>": @"<h3>Плейлисты</h3>",
             @"<h2>Queue</h2>": @"<h2>Очередь</h2>",
-            @"title=\\"Shuffle\\"": @"title=\\"Перемешать\\"",
-            @"title=\\"Repeat\\"": @"title=\\"Повтор\\"",
-            @"title=\\"Queue\\"": @"title=\\"Очередь\\"",
+            @"title=\"Shuffle\"": @"title=\"Перемешать\"",
+            @"title=\"Repeat\"": @"title=\"Повтор\"",
+            @"title=\"Queue\"": @"title=\"Очередь\"",
             @"No playlists in this export.": @"В экспорте нет плейлистов.",
             @"No tracks.": @"Нет треков.",
             @"\"All Tracks\"": @"\"Все треки\""
