@@ -1,3 +1,4 @@
+#import "LTLocalization.h"
 #import "LTWebExporter.h"
 #import "LTPlaylistStore.h"
 #import "LTModel.h"
@@ -100,6 +101,29 @@ static NSString *const kWebDataMarker = @"<!--WEB_DATA-->";
         return nil;
     }
     NSString *template = [NSString stringWithContentsOfFile:templatePath encoding:NSUTF8StringEncoding error:nil];
+
+    // The generated offline mini player follows the selected app language.
+    // Replace only user-facing text, never playlist or audio metadata.
+    if (LTIsRussian()) {
+        NSDictionary *labels = @{
+            @"<html lang=\\"en\\">": @"<html lang=\\"ru\\">",
+            @">Playlists</span>": @">Плейлисты</span>",
+            @">All Tracks</span>": @">Все треки</span>",
+            @"<h3>Playlists</h3>": @"<h3>Плейлисты</h3>",
+            @"<h2>Queue</h2>": @"<h2>Очередь</h2>",
+            @"title=\\"Shuffle\\"": @"title=\\"Перемешать\\"",
+            @"title=\\"Repeat\\"": @"title=\\"Повтор\\"",
+            @"title=\\"Queue\\"": @"title=\\"Очередь\\"",
+            @"No playlists in this export.": @"В экспорте нет плейлистов.",
+            @"No tracks.": @"Нет треков.",
+            @"\"All Tracks\"": @"\"Все треки\""
+        };
+        for (NSString *key in labels) {
+            template = [template stringByReplacingOccurrencesOfString:key withString:[labels objectForKey:key]];
+        }
+        template = [template stringByReplacingOccurrencesOfString:@"+' songs'" withString:@"+' треков'"];
+    }
+
 
     NSString *outDir = [[store baseDirectory] stringByAppendingPathComponent:@"web-export"];
     if ([fm fileExistsAtPath:outDir]) [fm removeItemAtPath:outDir error:nil];
