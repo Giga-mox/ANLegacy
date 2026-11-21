@@ -36,7 +36,7 @@
     self.view.backgroundColor = [UIColor colorWithWhite:0.11f alpha:1.0f];
 
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
-        initWithBarButtonSystemItem:UIBarButtonSystemItemCancel
+        initWithTitle:LTLoc(@"Cancel", @"Отмена") style:UIBarButtonItemStylePlain
                              target:self action:@selector(cancelTapped)];
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc]
         initWithTitle:LTLoc(@"Create", @"Создать") style:UIBarButtonItemStyleDone
